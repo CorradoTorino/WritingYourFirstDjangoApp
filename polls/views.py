@@ -6,19 +6,25 @@ from django.utils import timezone
 
 from .models import Choice, Question
 
+def get_published_questions():
+    return Question.objects.filter(pub_date__lte=timezone.now())
+
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
-    def get_last_five_pubblished_questions(self):
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+    def get_last_five_published_questions(self):
+        return get_published_questions().order_by('-pub_date')[:5]
     
     def get_queryset(self):
-        return self.get_last_five_pubblished_questions() 
+        return self.get_last_five_published_questions() 
 
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
+
+    def get_queryset(self):
+        return get_published_questions()
 
 class ResultsView(generic.DetailView):
     model = Question

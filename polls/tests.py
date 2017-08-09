@@ -14,6 +14,13 @@ def create_question(question_text, days):
     """
     time = timezone.now()+ datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text, pub_date=time)
+
+class QuestionDetailViewList(TestCase):
+    def test_future_question_cannot_be_shown(self):
+        future_question = create_question('Future question', 30)
+        url = reverse('polls:detail', args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(404, response.status_code)
     
 class QuestionModeltests(TestCase):
     def test_no_questions(self):
