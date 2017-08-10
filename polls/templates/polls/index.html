@@ -1,6 +1,7 @@
 {% load static %}
-<html>
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
+<html>
 	<head>
         <title>Polls Questions</title>
     </head>
@@ -10,8 +11,6 @@
 			<h1>Available Poll Questions</h1>
 		</div>
 		
-		<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
-
 		{% if latest_question_list %}
 			<ul>
 			{% for question in latest_question_list %}
