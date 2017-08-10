@@ -30,3 +30,9 @@ https://docs.djangoproject.com/en/1.11/intro/tutorial01/
 
 Available offline inside the repo
 
+Admin Credentials:
+
+User: admin
+
+pwd: djangoTutorial
+
