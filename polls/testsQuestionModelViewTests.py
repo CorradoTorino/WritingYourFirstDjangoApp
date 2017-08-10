@@ -1,28 +1,11 @@
 from django.test import TestCase
-from django.utils import timezone
-
 from django.core.urlresolvers import reverse
-
-import datetime
 
 from .models import Question
 
-def create_question(question_text, days):
-    """
-    Create a question given a question_text that is pubblished days ago.
-    Days can be negative for a question pubblished in the past or positive for future question. 
-    """
-    time = timezone.now()+ datetime.timedelta(days=days)
-    return Question.objects.create(question_text=question_text, pub_date=time)
-
-class QuestionDetailViewList(TestCase):
-    def test_future_question_cannot_be_shown(self):
-        future_question = create_question('Future question', 30)
-        url = reverse('polls:detail', args=(future_question.id,))
-        response = self.client.get(url)
-        self.assertEqual(404, response.status_code)
+from testUtilities import create_question
     
-class QuestionModeltests(TestCase):
+class QuestionModelViewTests(TestCase):
     def test_no_questions(self):
         """
         if no question are cretaed, then the message "No polls are available" is shown.
@@ -80,29 +63,3 @@ class QuestionModeltests(TestCase):
         self.assertQuerysetEqual(
             response.context['latest_question_list'],
             ['<Question: Past Question 2>', '<Question: Past Question 1>'])
-        
-    def test_was_published_recently_with_future_question_return_false(self):
-        """
-        was_published_recently() return false when the question is pubblished in the future.
-        """
-        
-        time = timezone.now() + datetime.timedelta(days=30)
-        future_question = Question(pub_date=time)
-        self.assertIs(future_question.was_published_recently(), False)
-
-    def  test_was_published_recently_with_old_question_return_false(self):
-        """
-        was_published_recently() return false when the question is pubblished more than one dya ago.
-        """
-        
-        time = timezone.now() - datetime.timedelta(days=1, seconds=1)
-        old_question = Question(pub_date=time)
-        self.assertIs(old_question.was_published_recently(), False)
-
-    def test_was_published_recently_with_a_question_created_in_the_last_day_return_true(self):
-        """
-        was_published_recently() return true when the question is pubblished in the last day.
-        """
-        time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
-        recent_question = Question(pub_date=time)
-        self.assertIs(recent_question.was_published_recently(), True)
