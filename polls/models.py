@@ -16,6 +16,7 @@ class Question(models.Model):
 
     def was_published_recently(self):
         return timezone.now() >= self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    was_published_recently.admin_order_field = 'pub_date'
 
 @python_2_unicode_compatible # only to support python2
 class Choice(models.Model):
