@@ -2,7 +2,8 @@ ToDo:
 - DONE. Writing your first Django app, part 5
 - DONE. Writing your first Django app, part 6
 - DONE. Writing your first Django app, part 7
-- Add an home button for each page
+- DONE. Add an home button for each page
 - DONE. Split tests in different files
 - DONE: Improve templates to add an header
+- Apply consistent design with CSS on all pages
 
